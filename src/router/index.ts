@@ -19,6 +19,16 @@ const routes = [
         name: 'CreateRandomExam',
         component: () => import(/* webpackChunkName: "create-random-exam" */ '@/views/CreateRandomExam.vue'),
       },
+      {
+        path: '/login',
+        name: 'Login',
+        component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: () => import(/* webpackChunkName: "register" */ '@/views/Register.vue'),
+      },
     ],
 
   },

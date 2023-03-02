@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+import { login } from '@/services/user.service';
+import { ref } from 'vue';
+
+const loggedInUser= ref()
+login({username: 'lampv', password: 'pass'}).then(response => {
+  loggedInUser.value = response.data
+})
 </script>
 <template>
   <VContainer>
