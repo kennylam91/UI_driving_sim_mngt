@@ -39,4 +39,17 @@ const router = createRouter({
   routes,
 })
 
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}")
+
+  if (['Login', 'Register'].includes(String(to.name))) {
+    next()
+  } else if (user?.username) {
+    next()
+  } else {
+    next({ name: 'Login' })
+  }
+})
+
+
 export default router

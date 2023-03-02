@@ -1,4 +1,9 @@
+import { BASE_API_URL } from '@/common/const'
 import axios from 'axios'
 export const login = (user: any) => {
-   return axios.post('https://ej7sgrs4h5.execute-api.ap-southeast-1.amazonaws.com/test/login', user)
+   return axios.post(`${BASE_API_URL}/login`, user)
+}
+
+export const register = (user: any) => {
+   return axios.post(`${BASE_API_URL}/users`, user)
 }

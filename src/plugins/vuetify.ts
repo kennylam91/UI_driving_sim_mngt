@@ -27,6 +27,13 @@ export default createVuetify({
     VSelect: {
       variant: "underlined",
       density: "comfortable"
+    },
+    VTextField: {
+      variant: "underlined",
+      density: "comfortable"
+    },
+    VBtn: {
+      variant: 'tonal'
     }
   }
 })
