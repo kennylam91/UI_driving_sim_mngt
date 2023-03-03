@@ -7,9 +7,8 @@ import UserProfile from './components/UserProfile.vue';
 <template>
   <v-app-bar flat>
     <v-app-bar-title>
-      <v-icon icon="mdi-circle-slice-6" />
-
-      Essentials Preset
+      <v-icon icon="mdi-car-multiple" size="40" />
+      DSM
     </v-app-bar-title>
     <v-spacer></v-spacer>
     <UserProfile class="mr-4" />

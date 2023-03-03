@@ -166,7 +166,7 @@ const onAddAnswersSave = async () => {
                   <span class="font-weight-medium d-inline-block mr-1" style="font-size: 20px">
                     {{ item.stats }}
                   </span>
-                  <span v-if="item.answers">{{ `(${item.answers} lan)` }}</span>
+                  <span v-if="item.answers">{{ `(${item.answers} lần)` }}</span>
                 </div>
               </div>
             </div>
