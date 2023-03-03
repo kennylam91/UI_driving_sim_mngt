@@ -57,8 +57,8 @@ const onAddAnswersSave = async () => {
         <span class="text-caption">
           Thêm điểm số mới bằng cách nhập vào ô dưới đây theo cấu trúc: 10:3,
           25:5 <br />
-          trong đó 10 là câu hỏi, 3 là điểm số tương ứng <br />
-          và các câu được ngăn cách bằng dấu phẩy.
+          trong đó 10 là câu hỏi, 3 là điểm số tương ứng và các câu được ngăn
+          cách bằng dấu phẩy.
         </span>
       </v-card-item>
       <v-card-text>

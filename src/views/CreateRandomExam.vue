@@ -10,15 +10,15 @@ const questions = generateRandomExam();
 const answers = reactive<Answer[]>(
   questions.map((q) => ({
     question: q,
-    point: '',
-    username: user.username
+    point: null,
+    username: user.username,
   }))
 );
 
 const reCreate = () => {
   const newQuestions = generateRandomExam();
   newQuestions.forEach((q, index) => {
-    answers[index] = { question: q, point: '', username: user.username };
+    answers[index] = { question: q, point: "", username: user.username };
   });
 };
 
@@ -30,7 +30,7 @@ const isSaveBtnDisabled = computed(
 );
 const save = async () => {
   answers.forEach((ans) => (totalPoint.value += Number(ans.point) ?? 0));
-  await addAnswers(answers)
+  await addAnswers(answers);
   showResult.value = true;
 };
 </script>
@@ -38,20 +38,32 @@ const save = async () => {
   <VContainer>
     <p class="text-h6">Tạo bộ đề thi ngẫu nhiên</p>
     <span class="text-caption">
-      Bộ đề thi sẽ được tạo ra ngẫu nhiên dựa theo cấu trúc đề thi thật của bộ GTVT.
+      Bộ đề thi sẽ được tạo ra ngẫu nhiên dựa theo cấu trúc đề thi thật của bộ
+      GTVT.
     </span>
     <VCard class="mt-3">
       <VCardText>
         <VForm :disabled="showResult">
           <VRow dense>
             <VCol v-for="answer in answers" :key="answer.question" cols="6">
-              <VSelect v-model="answer.point" :items="[5, 4, 3, 2, 1, 0]" :label="`Câu ${answer.question}`" chips />
+              <VSelect
+                v-model="answer.point"
+                :items="[5, 4, 3, 2, 1, 0]"
+                :label="`Câu ${answer.question}`"
+                chips
+              />
             </VCol>
           </VRow>
           <VRow dense>
             <VCol>
               <div class="form-action">
-                <VBtn color="primary" variant="elevated" :disabled="isSaveBtnDisabled" @click="save">Lưu</VBtn>
+                <VBtn
+                  color="primary"
+                  variant="elevated"
+                  :disabled="isSaveBtnDisabled"
+                  @click="save"
+                  >Lưu</VBtn
+                >
                 <VBtn color="warning" class="ml-2" @click="reCreate">
                   Tạo mới
                 </VBtn>
