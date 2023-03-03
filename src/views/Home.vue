@@ -129,11 +129,15 @@ const onAddAnswersSave = async () => {
       .map((item) => item.trim())
       .forEach((item) => {
         const splitArr = item.split(":").map((item) => item.trim());
-        answerList.push({
-          username: user.username as string,
-          question: splitArr[0],
-          point: splitArr[1],
-        });
+        const question = Number(splitArr[0]);
+        const point = Number(splitArr[1]);
+        if (question > 0 && question <= 120 && point >= 0 && point <= 5) {
+          answerList.push({
+            username: user.username as string,
+            question: question,
+            point: point,
+          });
+        }
       });
     await addAnswers(answerList);
     getAnswersAndCalculate();
