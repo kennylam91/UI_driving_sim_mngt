@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { generateRandomExam } from "@/common/helpers";
+import { Answer } from "@/common/type";
+import { addAnswers } from "@/services/answer.service";
+import { useAppStore } from "@/store/app";
 import { ref, reactive, computed } from "vue";
 
+const { user }: { user: any } = useAppStore();
 const questions = generateRandomExam();
-const answers = reactive(
+const answers = reactive<Answer[]>(
   questions.map((q) => ({
-    questionNo: q,
-    point: null,
+    question: q,
+    point: '',
+    username: user.username
   }))
 );
 
 const reCreate = () => {
   const newQuestions = generateRandomExam();
   newQuestions.forEach((q, index) => {
-    answers[index] = { questionNo: q, point: null };
+    answers[index] = { question: q, point: '', username: user.username };
   });
 };
 
@@ -23,8 +28,9 @@ const showResult = ref(false);
 const isSaveBtnDisabled = computed(
   () => showResult.value || answers.some((a) => a.point === null)
 );
-const save = () => {
-  answers.forEach((ans) => (totalPoint.value += ans.point ?? 0));
+const save = async () => {
+  answers.forEach((ans) => (totalPoint.value += Number(ans.point) ?? 0));
+  await addAnswers(answers)
   showResult.value = true;
 };
 </script>
@@ -38,8 +44,8 @@ const save = () => {
       <VCardText>
         <VForm :disabled="showResult">
           <VRow dense>
-            <VCol v-for="answer in answers" :key="answer.questionNo" cols="6">
-              <VSelect v-model="answer.point" :items="[5, 4, 3, 2, 1, 0]" :label="`Câu ${answer.questionNo}`" chips />
+            <VCol v-for="answer in answers" :key="answer.question" cols="6">
+              <VSelect v-model="answer.point" :items="[5, 4, 3, 2, 1, 0]" :label="`Câu ${answer.question}`" chips />
             </VCol>
           </VRow>
           <VRow dense>
