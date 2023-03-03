@@ -17,7 +17,7 @@ const registerUser = async () => {
   try {
     await register(form.value);
     snackbar.color = "success";
-    snackbar.text = "Dang ki tai khoan thanh cong";
+    snackbar.text = "Đăng kí tài khoản thành công";
     snackbar.show = true;
     setTimeout(() => {
       push({ name: "Login" });
@@ -33,76 +33,45 @@ const registerUser = async () => {
     <v-card class="auth-card pa-4 pt-7" max-width="448">
       <v-card-item class="justify-center">
         <v-card-title class="font-weight-semibold text-2xl text-uppercase">
-          Materio
+          Đăng kí tài khoản
         </v-card-title>
       </v-card-item>
 
       <v-card-text>
-        <v-form
-          @submit.prevent="registerUser"
-          ref="registerForm"
-          validate-on="blur"
-        >
+        <v-form @submit.prevent="registerUser" ref="registerForm" validate-on="blur">
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model="form.username"
-                label="Username"
-                required
-                :rules="[(v) => !!v || 'Username is required']"
-              />
+              <v-text-field v-model="form.username" label="Tài khoản" required
+                :rules="[(v) => !!v || 'Tài khoản là không được để trống.']" />
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="form.email"
-                label="Email"
-                type="email"
-                required
-              />
+              <v-text-field v-model="form.email" label="Email" type="email" required />
             </v-col>
 
             <v-col cols="12">
-              <v-text-field
-                v-model="form.password"
-                label="Password"
-                :type="isPasswordVisible ? 'text' : 'password'"
+              <v-text-field v-model="form.password" label="Mật khẩu" :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="
                   isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-                "
-                required
-                :rules="[(v) => !!v || 'Password is required']"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              />
+                " required :rules="[(v) => !!v || 'Mật khẩu không được để trống.']"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible" />
             </v-col>
             <v-col cols="12">
-              <v-btn
-                block
-                type="submit"
-                :disabled="!form.username || !form.password"
-                color="info"
-              >
-                Sign up
+              <v-btn block type="submit" :disabled="!form.username || !form.password" color="info">
+                Đăng kí
               </v-btn>
             </v-col>
 
             <!-- login instead -->
             <v-col cols="12" class="text-center text-base">
-              <span>Already have an account?</span>
-              <RouterLink class="text-primary ms-2" to="login">
-                Sign in
-              </RouterLink>
+              <span>Bạn đã có tài khoản?</span>
+              <RouterLink class="text-primary ms-2" to="login">Đăng nhập </RouterLink>
             </v-col>
           </v-row>
         </v-form>
       </v-card-text>
     </v-card>
-    <v-snackbar
-      v-model="snackbar.show"
-      :timeout="snackbar.timeout"
-      :color="snackbar.color"
-    >
-      {{ snackbar.text }}</v-snackbar
-    >
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+      {{ snackbar.text }}</v-snackbar>
   </div>
 </template>
 

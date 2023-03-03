@@ -30,33 +30,26 @@ const save = () => {
 </script>
 <template>
   <VContainer>
-    <span class="text-h6">Tạo bộ đề thi ngẫu nhiên</span>
+    <p class="text-h6">Tạo bộ đề thi ngẫu nhiên</p>
+    <span class="text-caption">
+      Bộ đề thi sẽ được tạo ra ngẫu nhiên dựa theo cấu trúc đề thi thật của bộ GTVT.
+    </span>
     <VCard class="mt-3">
       <VCardText>
         <VForm :disabled="showResult">
           <VRow dense>
             <VCol v-for="answer in answers" :key="answer.questionNo" cols="6">
-              <VSelect
-                v-model="answer.point"
-                :items="[5, 4, 3, 2, 1, 0]"
-                :label="`Câu ${answer.questionNo}`"
-                chips
-              />
+              <VSelect v-model="answer.point" :items="[5, 4, 3, 2, 1, 0]" :label="`Câu ${answer.questionNo}`" chips />
             </VCol>
           </VRow>
           <VRow dense>
             <VCol>
               <div class="form-action">
-                <VBtn
-                  color="primary"
-                  :disabled="isSaveBtnDisabled"
-                  @click="save"
-                  >Lưu</VBtn
-                >
-                <VBtn class="ml-2" to="/">Hủy bỏ</VBtn>
-                <VBtn color="success" class="ml-2" @click="reCreate">
+                <VBtn color="primary" variant="elevated" :disabled="isSaveBtnDisabled" @click="save">Lưu</VBtn>
+                <VBtn color="warning" class="ml-2" @click="reCreate">
                   Tạo mới
                 </VBtn>
+                <v-btn variant="plain" class="ml-2" to="/">Hủy bỏ</v-btn>
               </div>
             </VCol>
           </VRow>
