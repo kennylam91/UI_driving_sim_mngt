@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getAverage } from "@/common/helpers";
 import { Answer } from "@/common/type";
 import { useAppStore } from "@/store/app";
 import { storeToRefs } from "pinia";
@@ -10,6 +11,7 @@ const {
   totalAnswerArr,
   totalPointArr,
   answersByPart,
+  answersByQuestionMap,
 } = storeToRefs(appStore);
 
 const statistics = computed(() => {
@@ -54,32 +56,36 @@ const getAveragePoint = (partIdx: number) => {
 
 const historyDialog = ref(false);
 const selectedPart = ref(null);
-const selectedPartAnswers = computed(
-  () => answersByPart.value[selectedPart.value?.part - 1]
-);
-const selectedPartGroupedAnswers = computed(() => {
-  const groupedAnswers: any = {};
-  selectedPartAnswers.value.forEach((answer: Answer) => {
-    if (!groupedAnswers[answer.question]) {
-      groupedAnswers[answer.question] = [Number(answer.point)];
-    } else {
-      groupedAnswers[answer.question].push(Number(answer.point));
+const questionList = computed(() => {
+  const questionList: any[] = [];
+  const partRangeMap = {
+    1: [1, 29],
+    2: [30, 43],
+    3: [44, 63],
+    4: [64, 73],
+    5: [74, 90],
+    6: [91, 120],
+  };
+  if (selectedPart.value?.part) {
+    const partRange: number[] = partRangeMap[selectedPart.value.part];
+    for (let i = partRange[0]; i <= partRange[1]; i++) {
+      questionList.push({
+        num: i,
+        info: answersByQuestionMap.value.get(i),
+      });
     }
-  });
-  return groupedAnswers;
+  }
+  return questionList;
 });
+
 const viewHistory = (item: any) => {
   historyDialog.value = true;
   selectedPart.value = item;
 };
-
-const getAverage = (points: number[]) => {
-  return (points.reduce((sum, val) => sum + val) / points.length).toFixed(1);
-};
 </script>
 <template>
   <VCard title="Tổng quan">
-    <VCardText>
+    <VCardText class="mt-3">
       <VRow>
         <VCol v-for="item in statistics" :key="item.title" cols="6" sm="6">
           <div class="d-flex align-center">
@@ -124,33 +130,37 @@ const getAverage = (points: number[]) => {
       <v-toolbar
         density="compact"
         color="primary"
-        :title="`Lịch sử phần ${selectedPart.part}`"
+        :title="`Lịch sử xử lí các tình huống phần ${selectedPart.part}`"
       ></v-toolbar>
       <v-card-text>
         <v-table density="compact" fixed-header height="60vh">
           <thead>
             <tr>
-              <th>Câu hỏi</th>
+              <th>STT</th>
               <th>Điểm</th>
               <th>TB</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(points, question) of selectedPartGroupedAnswers"
-              :key="question"
-            >
-              <td>{{ question }}</td>
-              <td>{{ points.join(", ") }}</td>
-              <td>{{ getAverage(points) }}</td>
+            <tr v-for="question in questionList" :key="question.num">
+              <td>{{ question.num }}</td>
+              <td>
+                {{
+                  (question.info.answers && question.info.answers.join(", ")) ||
+                  "---"
+                }}
+              </td>
+              <td>
+                {{ question.info.avg }}
+              </td>
             </tr>
           </tbody>
         </v-table>
       </v-card-text>
       <v-card-actions class="justify-end">
-        <v-btn variant="text" @click="() => (historyDialog = false)"
-          >Close</v-btn
-        >
+        <v-btn variant="text" @click="() => (historyDialog = false)">
+          Đóng lại
+        </v-btn>
       </v-card-actions>
     </v-card>
   </VDialog>

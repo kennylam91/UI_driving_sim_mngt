@@ -3,13 +3,15 @@ import { useAppStore } from "@/store/app";
 import { computed } from "vue";
 import AddAnswersCard from "@/components/AddAnswersCard.vue";
 import OverviewCard from "@/components/OverviewCard.vue";
+import MistakeCard from "@/components/MistakeCard.vue";
 
-const { fetchAnswers } = useAppStore();
-fetchAnswers();
+const appStore = useAppStore();
+appStore.fetchAnswers();
 </script>
 <template>
-  <VContainer>
+  <VContainer :loading="appStore.loading">
     <OverviewCard />
+    <MistakeCard class="mt-4" />
     <AddAnswersCard />
 
     <VCard title="Tạo một bộ đề thi ngẫu nhiên" class="mt-4">
@@ -28,6 +30,11 @@ fetchAnswers();
         </VBtn>
       </VCardActions>
     </VCard>
+    <v-overlay
+      v-model="appStore.loading"
+      contained
+      class="align-center justify-center"
+    />
   </VContainer>
 </template>
 <style lang="scss"></style>

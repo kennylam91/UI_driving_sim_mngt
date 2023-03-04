@@ -51,3 +51,6 @@ export const generateRandomExam = () => {
   return exam.sort((a, b) => a - b)
 }
 
+export const getAverage = (points: number[]) => {
+  return points.length ? (points.reduce((sum, val) => sum + val, 0) / points.length).toFixed(1) : '';
+};
