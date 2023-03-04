@@ -1,10 +1,17 @@
 <script lang="ts" setup>
+import { Answer } from "@/common/type";
 import { useAppStore } from "@/store/app";
+import { invokeArrayFns } from "@vue/shared";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 const appStore = useAppStore();
-const { totalAnswers, totalPoints, totalAnswerArr, totalPointArr } =
-  storeToRefs(appStore);
+const {
+  totalAnswers,
+  totalPoints,
+  totalAnswerArr,
+  totalPointArr,
+  answersByPart,
+} = storeToRefs(appStore);
 
 const statistics = computed(() => {
   const arr: any[] = [
@@ -31,6 +38,7 @@ const statistics = computed(() => {
       answers: totalAnswerArr.value[i - 1],
       icon: `mdi-numeric-${i}-box`,
       color: "warning",
+      part: i,
     });
   }
 
@@ -43,6 +51,31 @@ const getAveragePoint = (partIdx: number) => {
     : Number(
         totalPointArr.value[partIdx] / totalAnswerArr.value[partIdx]
       ).toFixed(2);
+};
+
+const historyDialog = ref(false);
+const selectedPart = ref(null);
+const selectedPartAnswers = computed(
+  () => answersByPart.value[selectedPart.value?.part - 1]
+);
+const selectedPartGroupedAnswers = computed(() => {
+  const groupedAnswers: any = {};
+  selectedPartAnswers.value.forEach((answer: Answer) => {
+    if (!groupedAnswers[answer.question]) {
+      groupedAnswers[answer.question] = [Number(answer.point)];
+    } else {
+      groupedAnswers[answer.question].push(Number(answer.point));
+    }
+  });
+  return groupedAnswers;
+});
+const viewHistory = (item: any) => {
+  historyDialog.value = true;
+  selectedPart.value = item;
+};
+
+const getAverage = (points: number[]) => {
+  return (points.reduce((sum, val) => sum + val) / points.length).toFixed(1);
 };
 </script>
 <template>
@@ -73,7 +106,13 @@ const getAveragePoint = (partIdx: number) => {
                 >
                   {{ item.stats }}
                 </span>
-                <span v-if="item.answers">{{ `(${item.answers} lần)` }}</span>
+                <span
+                  v-if="item.answers"
+                  class="link text-info"
+                  @click="viewHistory(item)"
+                >
+                  {{ `(${item.answers} lần)` }}</span
+                >
               </div>
             </div>
           </div>
@@ -81,4 +120,48 @@ const getAveragePoint = (partIdx: number) => {
       </VRow>
     </VCardText>
   </VCard>
+  <VDialog v-model="historyDialog">
+    <v-card>
+      <v-toolbar
+        density="compact"
+        color="primary"
+        :title="`Lịch sử phần ${selectedPart.part}`"
+      ></v-toolbar>
+      <v-card-text>
+        <v-table density="compact" fixed-header height="60vh">
+          <thead>
+            <tr>
+              <th>Câu hỏi</th>
+              <th>Điểm</th>
+              <th>TB</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(points, question) of selectedPartGroupedAnswers"
+              :key="question"
+            >
+              <td>{{ question }}</td>
+              <td>{{ points.join(", ") }}</td>
+              <td>{{ getAverage(points) }}</td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-card-text>
+      <v-card-actions class="justify-end">
+        <v-btn variant="text" @click="() => (historyDialog = false)"
+          >Close</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </VDialog>
 </template>
+<style lang="scss">
+.link {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+</style>

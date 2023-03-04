@@ -15,7 +15,8 @@ const { loggedInUser } = useAppStore();
     bordered
   >
     <v-avatar style="cursor: pointer" color="primary" variant="tonal">
-      <v-img :alt="loggedInUser.username" :src="avatar" />
+      <!-- <v-img :alt="loggedInUser.username" :src="avatar" /> -->
+      <v-icon icon="mdi-account-circle" size="40"></v-icon>
 
       <!-- SECTION Menu -->
       <v-menu
@@ -38,7 +39,8 @@ const { loggedInUser } = useAppStore();
                   bordered
                 >
                   <v-avatar color="primary" size="40" variant="tonal">
-                    <v-img :alt="loggedInUser.username" :src="avatar" />
+                    <!-- <v-img :alt="loggedInUser.username" :src="avatar" /> -->
+                    <v-icon icon="mdi-account-circle" size="40"></v-icon>
                   </v-avatar>
                 </v-badge>
               </v-list-item-action>
