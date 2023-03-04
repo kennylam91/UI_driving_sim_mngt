@@ -32,6 +32,7 @@ export const useAppStore = defineStore("app", () => {
     for (let i = 0; i < 6; i++) {
       totalPointArr[i] = 0;
       totalAnswerArr[i] = 0;
+      answersByPart[i] = []
     }
     allAnswers.value?.forEach((answer) => {
       if (answer.question >= 91) {

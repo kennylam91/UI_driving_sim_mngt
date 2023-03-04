@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Answer } from "@/common/type";
 import { useAppStore } from "@/store/app";
-import { invokeArrayFns } from "@vue/shared";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 const appStore = useAppStore();
