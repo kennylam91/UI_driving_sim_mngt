@@ -50,3 +50,4 @@ export const generateRandomExam = () => {
 
   return exam.sort((a, b) => a - b)
 }
+

@@ -4,7 +4,7 @@ import { addAnswers } from "@/services/answer.service";
 import { useAppStore } from "@/store/app";
 import { ref } from "vue";
 
-const { user }: { user: any } = useAppStore();
+const { loggedInUser, fetchAnswers } = useAppStore();
 
 const addAnswersDialog = ref(false);
 const newAnswersStr = ref("");
@@ -13,8 +13,6 @@ const onAddAnswersClick = () => {
   newAnswersStr.value = "";
   addAnswersDialog.value = true;
 };
-
-const emit = defineEmits(["save"]);
 
 const onAddAnswersSave = async () => {
   const answerList: Answer[] = [];
@@ -28,7 +26,7 @@ const onAddAnswersSave = async () => {
         const point = Number(splitArr[1]);
         if (question > 0 && question <= 120 && point >= 0 && point <= 5) {
           answerList.push({
-            username: user.username as string,
+            username: loggedInUser.username as string,
             question: question,
             point: point,
           });
@@ -36,7 +34,7 @@ const onAddAnswersSave = async () => {
       });
     await addAnswers(answerList);
     addAnswersDialog.value = false;
-    emit("save");
+    await fetchAnswers();
   }
 };
 </script>

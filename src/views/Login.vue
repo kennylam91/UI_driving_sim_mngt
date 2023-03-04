@@ -36,23 +36,34 @@ const onLogin = async () => {
         <h5 class="text-h5 font-weight-semibold mb-1">
           Chào mừng đến với DSM ! 👋🏻
         </h5>
-        <span>Ứng dụng giúp bạn theo dõi, phân tích quá trình học mô phỏng lái xe của mình.</span>
+        <span
+          >Ứng dụng giúp bạn theo dõi, phân tích quá trình học mô phỏng lái xe
+          của mình.</span
+        >
       </v-card-text>
 
       <v-card-text>
         <v-form @submit.prevent="onLogin" validate-on="blur">
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="form.username" label="Tài khoản"
-                :rules="[(v) => !!v || 'Tài khoản là không được để trống.']" />
+              <v-text-field
+                v-model="form.username"
+                label="Tài khoản"
+                :rules="[(v) => !!v || 'Tài khoản là không được để trống.']"
+              />
             </v-col>
 
             <v-col cols="12">
-              <v-text-field v-model="form.password" label="Mật khẩu" :type="isPasswordVisible ? 'text' : 'password'"
+              <v-text-field
+                v-model="form.password"
+                label="Mật khẩu"
+                :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="
                   isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-                " :rules="[(v) => !!v || 'Mật khẩu không được để trống.']"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible" />
+                "
+                :rules="[(v) => !!v || 'Mật khẩu không được để trống.']"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              />
             </v-col>
             <v-col cols="12">
               <v-btn block type="submit"> Đăng nhập </v-btn>
@@ -61,14 +72,21 @@ const onLogin = async () => {
             <!-- create account -->
             <v-col cols="12" class="text-center text-base">
               <span>Bạn chưa có tài khoản ?</span>
-              <router-link class="text-primary ms-2" :to="{ name: 'Register' }">Tạo tạo khoản </router-link>
+              <router-link class="text-primary ms-2" :to="{ name: 'Register' }"
+                >Tạo tạo khoản
+              </router-link>
             </v-col>
           </v-row>
         </v-form>
       </v-card-text>
     </v-card>
-    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
-      {{ snackbar.text }}</v-snackbar>
+    <v-snackbar
+      v-model="snackbar.show"
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+    >
+      {{ snackbar.text }}</v-snackbar
+    >
   </div>
 </template>
 

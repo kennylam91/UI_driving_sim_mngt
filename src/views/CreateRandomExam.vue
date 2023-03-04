@@ -5,20 +5,24 @@ import { addAnswers } from "@/services/answer.service";
 import { useAppStore } from "@/store/app";
 import { ref, reactive, computed } from "vue";
 
-const { user }: { user: any } = useAppStore();
+const { loggedInUser } = useAppStore();
 const questions = generateRandomExam();
 const answers = reactive<Answer[]>(
   questions.map((q) => ({
     question: q,
     point: null,
-    username: user.username,
+    username: loggedInUser.username,
   }))
 );
 
 const reCreate = () => {
   const newQuestions = generateRandomExam();
   newQuestions.forEach((q, index) => {
-    answers[index] = { question: q, point: "", username: user.username };
+    answers[index] = {
+      question: q,
+      point: "",
+      username: loggedInUser.username,
+    };
   });
 };
 
