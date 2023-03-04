@@ -12,7 +12,6 @@ appStore.fetchAnswers();
   <VContainer :loading="appStore.loading">
     <OverviewCard />
     <MistakeCard class="mt-4" />
-    <AddAnswersCard />
 
     <VCard title="Tạo một bộ đề thi ngẫu nhiên" class="mt-4">
       <VCardText>
@@ -30,6 +29,7 @@ appStore.fetchAnswers();
         </VBtn>
       </VCardActions>
     </VCard>
+    <AddAnswersCard />
     <v-overlay
       v-model="appStore.loading"
       contained

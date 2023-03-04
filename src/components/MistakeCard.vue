@@ -1,34 +1,35 @@
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
 import { storeToRefs } from "pinia";
-import { reactive, watchEffect } from "vue";
+import { reactive, watch } from "vue";
 
 const appStore = useAppStore();
-const { answersByQuestionMap } = storeToRefs(appStore);
+const { answersByQuestionMap, loading } = storeToRefs(appStore);
 
 const minPointQuestions: any[] = reactive([null, null, null, null, null, null]);
 
-watchEffect(() => {
-  answersByQuestionMap.value.forEach((value, key) => {
-    console.log("value", value);
-    console.log("key", key);
+watch(loading, (newVal) => {
+  if (!newVal) {
+    console.log("recalculate the recently mistakes");
 
-    const found = minPointQuestions[value.part];
-    if (
-      !found ||
-      (found !== null &&
-        (Number(found.avg) > Number(value.avg) ||
-          (Number(found.avg) === Number(value.avg) &&
-            found.answers.length < value.answers.length)))
-    ) {
-      minPointQuestions[value.part] = value;
-    }
-  });
+    answersByQuestionMap.value.forEach((value, key) => {
+      const found = minPointQuestions[value.part];
+      if (
+        !found ||
+        (found !== null &&
+          (Number(found.avg) > Number(value.avg) ||
+            (Number(found.avg) === Number(value.avg) &&
+              found.answers.length < value.answers.length)))
+      ) {
+        minPointQuestions[value.part] = value;
+      }
+    });
+  }
 });
 </script>
 <template>
-  <VCard title="Tình huống cần cải thiện">
-    <v-table density="compact" fixed-header height="300px">
+  <VCard title="Sai sót gần đây">
+    <v-table density="compact" fixed-header height="150px">
       <thead>
         <tr>
           <th>Phần</th>
@@ -49,4 +50,15 @@ watchEffect(() => {
       </tbody>
     </v-table>
   </VCard>
+  <!-- <VDialog>
+    <VCard>
+      <VToolbar
+        density="compact"
+        color="error"
+        title="Luyện tập các tình huống xử lí kém nhất"
+      >
+        <VCardText> </VCardText>
+      </VToolbar>
+    </VCard>
+  </VDialog> -->
 </template>

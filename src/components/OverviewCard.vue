@@ -10,7 +10,6 @@ const {
   totalPoints,
   totalAnswerArr,
   totalPointArr,
-  answersByPart,
   answersByQuestionMap,
 } = storeToRefs(appStore);
 

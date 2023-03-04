@@ -16,7 +16,6 @@ export const useAppStore = defineStore("app", () => {
 
   const totalPointArr = reactive([0, 0, 0, 0, 0, 0]);
   const totalAnswerArr = reactive([0, 0, 0, 0, 0, 0]);
-  const answersByPart = reactive<any>({ 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] })
   const answersByQuestionMap = reactive<Map<number, { question: number, answers: number[], part: number, avg: string, totalPoint: number }>>(new Map())
 
   const fetchAnswers = async () => {
@@ -33,10 +32,10 @@ export const useAppStore = defineStore("app", () => {
   }
 
   const analyzeAnswers = () => {
+    totalPoints.value = 0
     for (let i = 0; i < 6; i++) {
       totalPointArr[i] = 0;
       totalAnswerArr[i] = 0;
-      answersByPart[i] = []
     }
     for (let i = 1; i <= 120; i++) {
       answersByQuestionMap.set(i, { question: i, part: 0, avg: '---', answers: [], totalPoint: 0 })
@@ -46,32 +45,26 @@ export const useAppStore = defineStore("app", () => {
         answer.part = 5
         totalPointArr[5] += Number(answer.point);
         totalAnswerArr[5]++;
-        answersByPart[5].push(answer)
       } else if (answer.question >= 74) {
         answer.part = 4
         totalPointArr[4] += Number(answer.point);
         totalAnswerArr[4]++;
-        answersByPart[4].push(answer)
       } else if (answer.question >= 64) {
         answer.part = 3
         totalPointArr[3] += Number(answer.point);
         totalAnswerArr[3]++;
-        answersByPart[3].push(answer)
       } else if (answer.question >= 44) {
         answer.part = 2
         totalPointArr[2] += Number(answer.point);
         totalAnswerArr[2]++;
-        answersByPart[2].push(answer)
       } else if (answer.question >= 30) {
         answer.part = 1
         totalPointArr[1] += Number(answer.point);
         totalAnswerArr[1]++;
-        answersByPart[1].push(answer)
       } else if (answer.question > 1) {
         answer.part = 0
         totalPointArr[0] += Number(answer.point);
         totalAnswerArr[0]++;
-        answersByPart[0].push(answer)
       }
       if (answer.question > 0 && answer.question <= 120) {
         const questionObj = answersByQuestionMap.get(Number(answer.question))
@@ -89,7 +82,7 @@ export const useAppStore = defineStore("app", () => {
 
   return {
     loggedInUser, setUser, fetchAnswers, totalAnswers, totalPoints, loading,
-    totalAnswerArr, totalPointArr, answersByPart, answersByQuestionMap
+    totalAnswerArr, totalPointArr, answersByQuestionMap
   }
 });
 
