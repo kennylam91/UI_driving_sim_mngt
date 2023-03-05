@@ -42,8 +42,7 @@ const save = async () => {
   <VContainer>
     <p class="text-h6">Tạo bộ đề thi ngẫu nhiên</p>
     <span class="text-caption">
-      Bộ đề thi sẽ được tạo ra ngẫu nhiên dựa theo cấu trúc đề thi thật của bộ
-      GTVT.
+      Bộ đề thi sẽ được tạo ra ngẫu nhiên dựa theo cấu trúc đề thi thật của bộ GTVT.
     </span>
     <VCard class="mt-3">
       <VCardText>

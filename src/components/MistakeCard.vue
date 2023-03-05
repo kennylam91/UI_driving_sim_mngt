@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import {useAppStore} from "@/store/app";
 import {storeToRefs} from "pinia";
-import {reactive, watch} from "vue";
+import {computed, reactive, ref, watch} from "vue";
+import {Answer} from "@/common/type";
 
 const appStore = useAppStore();
+const {loggedInUser} = useAppStore();
 const {answersByQuestionMap, loading} = storeToRefs(appStore);
 
 const minPointQuestions: any[] = reactive([null, null, null, null, null, null]);
@@ -26,6 +28,22 @@ watch(loading, (newVal) => {
     });
   }
 });
+
+const practiceDialog = ref(false)
+const answers = ref<Answer[]>([])
+const onPracticeClick = () => {
+  practiceDialog.value = true
+  answers.value = minPointQuestions.map(item => ({
+    question: item.question,
+    point: null,
+    username: loggedInUser.usernam
+  }))
+}
+const isSaveBtnDisabled = computed(() => false)
+const save = () => {
+
+}
+
 </script>
 <template>
   <VCard title="Tình huống cần cải thiện">
@@ -45,21 +63,58 @@ watch(loading, (newVal) => {
           <td>{{ questionObj && questionObj.question }}</td>
           <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
           <td>{{ questionObj && questionObj.avg }}</td>
-        </template
-        >
+        </template>
       </tr>
       </tbody>
     </v-table>
+    <v-divider></v-divider>
+    <v-card-actions>
+      <v-btn color="warning" variant="text">
+        Xem thêm
+      </v-btn>
+      <v-btn color="primary" variant="text" @click="onPracticeClick">
+        Luyện tập ngay
+      </v-btn>
+    </v-card-actions>
+    <VDialog v-model="practiceDialog">
+      <VCard>
+        <VToolbar
+          density="compact"
+          color="warning"
+          title="Luyện tập các tình huống sai"
+        >
+          <VCardText>
+            <VForm>
+              <VRow dense>
+                <VCol v-for="answer in answers" :key="answer.question" cols="6">
+                  <VSelect
+                    v-model="answer.point"
+                    :items="[5, 4, 3, 2, 1, 0]"
+                    :label="`Câu ${answer.question}`"
+                    chips
+                  />
+                </VCol>
+              </VRow>
+              <VRow dense>
+                <VCol>
+                  <div class="form-action">
+                    <VBtn
+                      color="primary"
+                      variant="elevated"
+                      :disabled="isSaveBtnDisabled"
+                      @click="save"
+                    >
+                      Lưu
+                    </VBtn>
+                    <v-btn variant="plain" class="ml-2" to="/">Hủy bỏ</v-btn>
+                  </div>
+                </VCol>
+              </VRow>
+            </VForm>
+          </VCardText>
+        </VToolbar>
+      </VCard>
+    </VDialog>
   </VCard>
-  <!-- <VDialog>
-    <VCard>
-      <VToolbar
-        density="compact"
-        color="error"
-        title="Luyện tập các tình huống xử lí kém nhất"
-      >
-        <VCardText> </VCardText>
-      </VToolbar>
-    </VCard>
-  </VDialog> -->
+
 </template>

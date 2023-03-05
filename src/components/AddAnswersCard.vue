@@ -44,7 +44,7 @@ const onAddAnswersSave = async () => {
       Thêm nhanh điểm số của các câu hỏi đã luyện tập.
     </VCardText>
     <VCardActions>
-      <VBtn block color="primary" variant="tonal" @click="onAddAnswersClick">
+      <VBtn color="primary" variant="text" @click="onAddAnswersClick">
         Thêm điểm
       </VBtn>
     </VCardActions>
@@ -67,10 +67,9 @@ const onAddAnswersSave = async () => {
         />
       </v-card-text>
       <v-card-actions class="justify-end">
-        <VBtn color="primary" variant="tonal" @click="onAddAnswersSave"
-        >Lưu
-        </VBtn
-        >
+        <VBtn color="primary" variant="tonal" @click="onAddAnswersSave">
+          Lưu
+        </VBtn>
         <VBtn @click="addAnswersDialog = false">Hủy bỏ</VBtn>
       </v-card-actions>
     </v-card>

@@ -14,14 +14,12 @@ appStore.fetchAnswers();
 
     <VCard title="Tạo một bộ đề thi ngẫu nhiên" class="mt-4">
       <VCardText>
-        Hệ thống sẽ tạo ra một bộ đề thi ngẫu nhiên theo cấu trúc đề thi thật từ
-        bộ GTVT.
+        Hệ thống sẽ tạo ra một bộ đề thi ngẫu nhiên 10 câu theo cấu trúc đề thi thật từ bộ GTVT.
       </VCardText>
       <VCardActions>
         <VBtn
-          block
           color="primary"
-          variant="tonal"
+          variant="text"
           :to="{ name: 'CreateRandomExam' }"
         >
           Tạo ngay
