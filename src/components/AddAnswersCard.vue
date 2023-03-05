@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Answer } from "@/common/type";
-import { addAnswers } from "@/services/answer.service";
-import { useAppStore } from "@/store/app";
-import { ref } from "vue";
+import {Answer} from "@/common/type";
+import {addAnswers} from "@/services/answer.service";
+import {useAppStore} from "@/store/app";
+import {ref} from "vue";
 
-const { loggedInUser, fetchAnswers } = useAppStore();
+const {loggedInUser, fetchAnswers} = useAppStore();
 
 const addAnswersDialog = ref(false);
 const newAnswersStr = ref("");
@@ -39,9 +39,9 @@ const onAddAnswersSave = async () => {
 };
 </script>
 <template>
-  <VCard title="Thêm điểm số" class="mt-4">
+  <VCard title="Thêm điểm số nhanh" class="mt-4">
     <VCardText>
-      Thêm ngay điểm số của các câu hỏi trong quá trình luyện tập.
+      Thêm nhanh điểm số của các câu hỏi đã luyện tập.
     </VCardText>
     <VCardActions>
       <VBtn block color="primary" variant="tonal" @click="onAddAnswersClick">
@@ -54,7 +54,7 @@ const onAddAnswersSave = async () => {
       <v-card-item>
         <span class="text-caption">
           Thêm điểm số mới bằng cách nhập vào ô dưới đây theo cấu trúc: 10:3,
-          25:5 <br />
+          25:5 <br/>
           trong đó 10 là câu hỏi, 3 là điểm số tương ứng và các câu được ngăn
           cách bằng dấu phẩy.
         </span>
@@ -68,7 +68,8 @@ const onAddAnswersSave = async () => {
       </v-card-text>
       <v-card-actions class="justify-end">
         <VBtn color="primary" variant="tonal" @click="onAddAnswersSave"
-          >Lưu</VBtn
+        >Lưu
+        </VBtn
         >
         <VBtn @click="addAnswersDialog = false">Hủy bỏ</VBtn>
       </v-card-actions>

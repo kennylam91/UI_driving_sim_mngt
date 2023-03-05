@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { generateRandomExam } from "@/common/helpers";
-import { Answer } from "@/common/type";
-import { addAnswers } from "@/services/answer.service";
-import { useAppStore } from "@/store/app";
-import { ref, reactive, computed } from "vue";
+import {generateRandomExam} from "@/common/helpers";
+import {Answer} from "@/common/type";
+import {addAnswers} from "@/services/answer.service";
+import {useAppStore} from "@/store/app";
+import {computed, reactive, ref} from "vue";
 
-const { loggedInUser } = useAppStore();
+const {loggedInUser} = useAppStore();
 const questions = generateRandomExam();
 const answers = reactive<Answer[]>(
   questions.map((q) => ({
@@ -66,8 +66,8 @@ const save = async () => {
                   variant="elevated"
                   :disabled="isSaveBtnDisabled"
                   @click="save"
-                  >Lưu</VBtn
-                >
+                >Lưu
+                </VBtn>
                 <VBtn color="warning" class="ml-2" @click="reCreate">
                   Tạo mới
                 </VBtn>
@@ -79,12 +79,26 @@ const save = async () => {
       </VCardText>
     </VCard>
 
-    <VCard v-show="showResult" title="Kết quả" class="mt-3">
-      <VCardText>
-        <p>Tổng điểm: {{ totalPoint }}</p>
-        <p>Đánh giá: {{ evaluate }}</p>
-      </VCardText>
-    </VCard>
+    <VDialog v-model="showResult">
+      <VCard class="mt-3">
+        <VToolbar density="compact" color="primary" title="Kết quả"/>
+        <VCardText>
+          <p>Tổng điểm: <strong>{{ totalPoint }}</strong></p>
+          <p class="mt-3">Đánh giá:
+            <span :class="[totalPoint >= 35 ? 'text-success' : 'text-error', 'font-weight-bold']">
+            {{ evaluate }}
+          </span>
+          </p>
+        </VCardText>
+        <v-card-actions class="justify-end">
+          <v-btn variant="text" @click="() => (showResult = false)">
+            Đóng
+          </v-btn>
+        </v-card-actions>
+      </VCard>
+    </VDialog>
+
+
   </VContainer>
 </template>
 

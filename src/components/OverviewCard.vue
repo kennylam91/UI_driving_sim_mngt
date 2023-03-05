@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { getAverage } from "@/common/helpers";
-import { Answer } from "@/common/type";
-import { useAppStore } from "@/store/app";
-import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
+import {useAppStore} from "@/store/app";
+import {storeToRefs} from "pinia";
+import {computed, ref} from "vue";
+
 const appStore = useAppStore();
 const {
   totalAnswers,
@@ -49,8 +48,8 @@ const getAveragePoint = (partIdx: number) => {
   return isNaN(totalPointArr.value[partIdx] / totalAnswerArr.value[partIdx])
     ? "---"
     : Number(
-        totalPointArr.value[partIdx] / totalAnswerArr.value[partIdx]
-      ).toFixed(2);
+      totalPointArr.value[partIdx] / totalAnswerArr.value[partIdx]
+    ).toFixed(2);
 };
 
 const historyDialog = ref(false);
@@ -85,8 +84,8 @@ const viewHistory = (item: any) => {
 <template>
   <VCard title="Tổng quan">
     <VCardText class="mt-3">
-      <VRow>
-        <VCol v-for="item in statistics" :key="item.title" cols="6" sm="6">
+      <VRow dense>
+        <VCol v-for="item in statistics" :key="item.title" cols="6" sm="6" class="py-2">
           <div class="d-flex align-center">
             <div class="me-3">
               <VAvatar
@@ -95,7 +94,7 @@ const viewHistory = (item: any) => {
                 size="42"
                 class="elevation-1"
               >
-                <VIcon size="24" :icon="item.icon" />
+                <VIcon size="24" :icon="item.icon"/>
               </VAvatar>
             </div>
 
@@ -106,16 +105,16 @@ const viewHistory = (item: any) => {
               <div>
                 <span
                   class="font-weight-medium d-inline-block mr-1"
-                  style="font-size: 20px"
+                  style="font-size: 18px"
                 >
                   {{ item.stats }}
                 </span>
                 <span
                   v-if="item.answers"
                   class="link text-info"
-                  @click="viewHistory(item)"
+                  @click=" viewHistory(item)"
                 >
-                  {{ `(${item.answers} lần)` }}</span
+                {{ `(${item.answers} lần)` }}</span
                 >
               </div>
             </div>
@@ -129,36 +128,36 @@ const viewHistory = (item: any) => {
       <v-toolbar
         density="compact"
         color="primary"
-        :title="`Lịch sử xử lí các tình huống phần ${selectedPart.part}`"
+        :title="`Thống kê các tình huống phần ${selectedPart.part}`"
       ></v-toolbar>
-      <v-card-text>
+      <v-card-text class="pa-0">
         <v-table density="compact" fixed-header height="60vh">
           <thead>
-            <tr>
-              <th>STT</th>
-              <th>Điểm</th>
-              <th>TB</th>
-            </tr>
+          <tr>
+            <th>STT</th>
+            <th>Điểm</th>
+            <th>TB</th>
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="question in questionList" :key="question.num">
-              <td>{{ question.num }}</td>
-              <td>
-                {{
-                  (question.info.answers && question.info.answers.join(", ")) ||
-                  "---"
-                }}
-              </td>
-              <td>
-                {{ question.info.avg }}
-              </td>
-            </tr>
+          <tr v-for="question in questionList" :key="question.num">
+            <td>{{ question.num }}</td>
+            <td>
+              {{
+                (question.info.answers && question.info.answers.join(", ")) ||
+                "---"
+              }}
+            </td>
+            <td>
+              {{ question.info.avg }}
+            </td>
+          </tr>
           </tbody>
         </v-table>
       </v-card-text>
       <v-card-actions class="justify-end">
         <v-btn variant="text" @click="() => (historyDialog = false)">
-          Đóng lại
+          Đóng
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -167,6 +166,7 @@ const viewHistory = (item: any) => {
 <style lang="scss">
 .link {
   text-decoration: none;
+
   &:hover {
     text-decoration: underline;
     cursor: pointer;

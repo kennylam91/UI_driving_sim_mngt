@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useAppStore } from "@/store/app";
-import { storeToRefs } from "pinia";
-import { reactive, watch } from "vue";
+import {useAppStore} from "@/store/app";
+import {storeToRefs} from "pinia";
+import {reactive, watch} from "vue";
 
 const appStore = useAppStore();
-const { answersByQuestionMap, loading } = storeToRefs(appStore);
+const {answersByQuestionMap, loading} = storeToRefs(appStore);
 
 const minPointQuestions: any[] = reactive([null, null, null, null, null, null]);
 
@@ -28,25 +28,26 @@ watch(loading, (newVal) => {
 });
 </script>
 <template>
-  <VCard title="Sai sót gần đây">
-    <v-table density="compact" fixed-header height="150px">
+  <VCard title="Tình huống cần cải thiện">
+    <v-table density="compact" fixed-header height="260px">
       <thead>
-        <tr>
-          <th>Phần</th>
-          <th>Tình huống</th>
-          <th>Điểm</th>
-          <th>TB</th>
-        </tr>
+      <tr>
+        <th>Phần</th>
+        <th>Tình huống</th>
+        <th>Điểm</th>
+        <th>TB</th>
+      </tr>
       </thead>
       <tbody>
-        <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
-          <template v-if="questionObj">
-            <td>{{ questionObj && questionObj.part + 1 }}</td>
-            <td>{{ questionObj && questionObj.question }}</td>
-            <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
-            <td>{{ questionObj && questionObj.avg }}</td></template
-          >
-        </tr>
+      <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
+        <template v-if="questionObj">
+          <td>{{ questionObj && questionObj.part + 1 }}</td>
+          <td>{{ questionObj && questionObj.question }}</td>
+          <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
+          <td>{{ questionObj && questionObj.avg }}</td>
+        </template
+        >
+      </tr>
       </tbody>
     </v-table>
   </VCard>

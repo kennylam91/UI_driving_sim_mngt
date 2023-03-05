@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { useAppStore } from "@/store/app";
-import { computed } from "vue";
+import {useAppStore} from "@/store/app";
 import AddAnswersCard from "@/components/AddAnswersCard.vue";
 import OverviewCard from "@/components/OverviewCard.vue";
 import MistakeCard from "@/components/MistakeCard.vue";
@@ -10,8 +9,8 @@ appStore.fetchAnswers();
 </script>
 <template>
   <VContainer :loading="appStore.loading">
-    <OverviewCard />
-    <MistakeCard class="mt-4" />
+    <OverviewCard/>
+    <MistakeCard class="mt-4"/>
 
     <VCard title="Tạo một bộ đề thi ngẫu nhiên" class="mt-4">
       <VCardText>
@@ -29,7 +28,7 @@ appStore.fetchAnswers();
         </VBtn>
       </VCardActions>
     </VCard>
-    <AddAnswersCard />
+    <AddAnswersCard/>
     <v-overlay
       v-model="appStore.loading"
       contained
