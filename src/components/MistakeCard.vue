@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useAppStore } from "@/store/app";
-import { storeToRefs } from "pinia";
-import { computed, reactive, ref, watch } from "vue";
-import { Answer } from "@/common/type";
-import { addAnswers } from "@/services/answer.service";
+import {useAppStore} from "@/store/app";
+import {storeToRefs} from "pinia";
+import {computed, reactive, ref, watch} from "vue";
+import {Answer} from "@/common/type";
+import {addAnswers} from "@/services/answer.service";
 
 const appStore = useAppStore();
-const { loggedInUser, fetchAnswers } = appStore;
-const { answersByQuestionMap, loading } = storeToRefs(appStore);
+const {loggedInUser, fetchAnswers} = appStore;
+const {answersByQuestionMap, loading} = storeToRefs(appStore);
 
 const minPointQuestions: any[] = reactive([null, null, null, null, null, null]);
 
@@ -53,23 +53,23 @@ const save = async () => {
 <template>
   <VCard title="Tình huống cần cải thiện">
     <v-table density="compact" fixed-header height="260px">
-      <thead>
-        <tr>
-          <th>Phần</th>
-          <th>Tình huống</th>
-          <th>Điểm</th>
-          <th>TB</th>
-        </tr>
+      <thead style="font-size: 14px;">
+      <tr>
+        <th>Phần</th>
+        <th>TH</th>
+        <th>Điểm</th>
+        <th>TB</th>
+      </tr>
       </thead>
-      <tbody>
-        <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
-          <template v-if="questionObj">
-            <td>{{ questionObj && questionObj.part + 1 }}</td>
-            <td>{{ questionObj && questionObj.question }}</td>
-            <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
-            <td>{{ questionObj && questionObj.avg }}</td>
-          </template>
-        </tr>
+      <tbody style="font-size: 14px;">
+      <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
+        <template v-if="questionObj">
+          <td>{{ questionObj && questionObj.part + 1 }}</td>
+          <td>{{ questionObj && questionObj.question }}</td>
+          <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
+          <td>{{ questionObj && questionObj.avg }}</td>
+        </template>
+      </tr>
       </tbody>
     </v-table>
     <v-divider></v-divider>
@@ -79,7 +79,7 @@ const save = async () => {
         Luyện tập ngay
       </v-btn>
     </v-card-actions>
-    <VDialog v-model="practiceDialog">
+    <VDialog v-model="practiceDialog" width="700px">
       <VCard>
         <VToolbar
           density="compact"
@@ -114,7 +114,7 @@ const save = async () => {
                     variant="plain"
                     class="ml-2"
                     @click="() => (practiceDialog = false)"
-                    >Hủy bỏ
+                  >Đóng
                   </v-btn>
                 </div>
               </VCol>

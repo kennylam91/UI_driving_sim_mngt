@@ -39,7 +39,7 @@ const onAddAnswersSave = async () => {
 };
 </script>
 <template>
-  <VCard title="Thêm điểm số nhanh" class="mt-4">
+  <VCard title="Thêm điểm số nhanh">
     <VCardText>
       Thêm nhanh điểm số của các câu hỏi đã luyện tập.
     </VCardText>
@@ -48,30 +48,31 @@ const onAddAnswersSave = async () => {
         Thêm điểm
       </VBtn>
     </VCardActions>
-  </VCard>
-  <v-dialog v-model="addAnswersDialog" width="auto" persistent>
-    <v-card title="Thêm điểm số">
-      <v-card-item>
+    <v-dialog v-model="addAnswersDialog" width="auto" persistent>
+      <v-card title="Thêm điểm số">
+        <v-card-item>
         <span class="text-caption">
           Thêm điểm số mới bằng cách nhập vào ô dưới đây theo cấu trúc: 10:3,
           25:5 <br/>
           trong đó 10 là câu hỏi, 3 là điểm số tương ứng và các câu được ngăn
           cách bằng dấu phẩy.
         </span>
-      </v-card-item>
-      <v-card-text>
-        <VTextarea
-          variant="outlined"
-          v-model="newAnswersStr"
-          placeholder="10:3, 25:5"
-        />
-      </v-card-text>
-      <v-card-actions class="justify-end">
-        <VBtn color="primary" variant="tonal" @click="onAddAnswersSave">
-          Lưu
-        </VBtn>
-        <VBtn @click="addAnswersDialog = false">Hủy bỏ</VBtn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </v-card-item>
+        <v-card-text>
+          <VTextarea
+            variant="outlined"
+            v-model="newAnswersStr"
+            placeholder="10:3, 25:5"
+          />
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <VBtn color="primary" variant="tonal" @click="onAddAnswersSave">
+            Lưu
+          </VBtn>
+          <VBtn @click="addAnswersDialog = false">Quay lại</VBtn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </VCard>
+
 </template>

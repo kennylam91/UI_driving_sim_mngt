@@ -20,7 +20,7 @@ const reCreate = () => {
   newQuestions.forEach((q, index) => {
     answers[index] = {
       question: q,
-      point: "",
+      point: null,
       username: loggedInUser.username,
     };
   });
@@ -78,7 +78,7 @@ const save = async () => {
       </VCardText>
     </VCard>
 
-    <VDialog v-model="showResult">
+    <VDialog v-model="showResult" width="500px">
       <VCard class="mt-3">
         <VToolbar density="compact" color="primary" title="Kết quả"/>
         <VCardText>

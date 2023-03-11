@@ -32,7 +32,7 @@ const statistics = computed(() => {
   ];
   for (let i = 1; i <= 6; i++) {
     arr.push({
-      title: "Điểm TB phần " + i,
+      title: "Phần " + i,
       stats: getAveragePoint(i - 1),
       answers: totalAnswerArr.value[i - 1],
       icon: `mdi-numeric-${i}-box`,
@@ -84,10 +84,10 @@ const viewHistory = (item: any) => {
 <template>
   <VCard title="Tổng quan">
     <VCardText class="mt-3">
-      <VRow dense>
+      <VRow>
         <VCol v-for="item in statistics" :key="item.title" cols="6" sm="6" class="py-2">
           <div class="d-flex align-center">
-            <div class="me-3">
+            <div class="me-2">
               <VAvatar
                 :color="item.color"
                 rounded
@@ -105,13 +105,13 @@ const viewHistory = (item: any) => {
               <div>
                 <span
                   class="font-weight-medium d-inline-block mr-1"
-                  style="font-size: 18px"
+                  style="font-size: 16px"
                 >
                   {{ item.stats }}
                 </span>
                 <span
                   v-if="item.answers"
-                  class="link text-info"
+                  class="link text-caption text-info"
                   @click=" viewHistory(item)"
                 >
                 {{ `(${item.answers} lần)` }}</span
