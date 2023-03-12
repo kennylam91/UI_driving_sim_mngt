@@ -4,7 +4,7 @@ import {getAnswers} from "@/services/answer.service";
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
 import 'moment-timezone';
-import * as moment from 'moment'
+import moment from 'moment'
 
 
 export const useAppStore = defineStore("app", () => {
@@ -82,7 +82,6 @@ export const useAppStore = defineStore("app", () => {
           questionObj.avg = (questionObj.totalPoint / questionObj.answers.length).toFixed(1)
         }
         const timezone = moment.tz.guess()
-        // const createdAtDateTime = new Date(moment(answer.createdAt!).toLocaleString(timezone))
         const localeDate = moment.tz(answer.createdAt!, timezone).format('DD-MM')
         if (averagePointGroupByDay.value[localeDate]) {
           averagePointGroupByDay.value[localeDate].total += Number(answer.point)

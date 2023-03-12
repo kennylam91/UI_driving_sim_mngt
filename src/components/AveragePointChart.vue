@@ -17,7 +17,7 @@ const options = ref<any>({
 })
 
 const series = ref<any>([
-  {name: 'avg', data: []}
+  {name: 'Điểm TB', data: []}
 ])
 
 watch(loading, (newVal) => {

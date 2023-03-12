@@ -1,5 +1,5 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -20,15 +20,16 @@ const routes = [
         component: () => import(/* webpackChunkName: "create-random-exam" */ '@/views/CreateRandomExam.vue'),
       },
       {
-        path: '/login',
+        path: '/dang-nhap',
         name: 'Login',
         component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
       },
       {
-        path: '/register',
+        path: '/dang-ki',
         name: 'Register',
         component: () => import(/* webpackChunkName: "register" */ '@/views/Register.vue'),
       },
+
     ],
 
   },
@@ -47,7 +48,7 @@ router.beforeEach((to, from, next) => {
   } else if (user?.username) {
     next()
   } else {
-    next({ name: 'Login' })
+    next({name: 'Login'})
   }
 })
 

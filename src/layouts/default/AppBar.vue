@@ -12,8 +12,7 @@ const backToHome = () => {
 <template>
   <v-app-bar flat>
     <v-app-bar-title style="cursor: pointer;" @click="backToHome">
-      <v-icon icon="mdi-car-multiple" size="40"/>
-      DSM
+      <img src="/logo.png" alt="SimuDrivePro logo" height="70" width="70" style="margin-bottom: -10px;"/>
     </v-app-bar-title>
     <v-spacer></v-spacer>
     <UserProfile class="mr-4"/>

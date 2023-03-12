@@ -53,7 +53,7 @@ const getAveragePoint = (partIdx: number) => {
 };
 
 const historyDialog = ref(false);
-const selectedPart = ref(null);
+const selectedPart = ref<any>(null);
 const questionList = computed(() => {
   const questionList: any[] = [];
   const partRangeMap = {
@@ -65,6 +65,7 @@ const questionList = computed(() => {
     6: [91, 120],
   };
   if (selectedPart.value?.part) {
+    // @ts-ignored
     const partRange: number[] = partRangeMap[selectedPart.value.part];
     for (let i = partRange[0]; i <= partRange[1]; i++) {
       questionList.push({
