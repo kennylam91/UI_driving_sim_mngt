@@ -9,26 +9,56 @@ const appStore = useAppStore();
 const {loggedInUser, fetchAnswers} = appStore;
 const {answersByQuestionMap, loading} = storeToRefs(appStore);
 
-const minPointQuestions: any[] = reactive([null, null, null, null, null, null]);
+const minPointQuestions = ref<any[]>([])
+const minPointQuestions1: any[] = reactive([null, null, null, null, null, null]);
+const minPointQuestions2: any[] = reactive([null, null, null, null, null, null]);
 
 watch(loading, (newVal) => {
   if (!newVal) {
     for (let i = 0; i < 6; i++) {
-      minPointQuestions[i] = null;
+      minPointQuestions1[i] = null;
+      minPointQuestions2[i] = null;
     }
+    minPointQuestions.value = []
+
 
     answersByQuestionMap.value.forEach((value, key) => {
-      const found = minPointQuestions[value.part];
+      const found1 = minPointQuestions1[value.part];
+      const found2 = minPointQuestions2[value.part];
+
       if (
-        !found ||
-        (found !== null &&
-          (Number(found.avg) > Number(value.avg) ||
-            (Number(found.avg) === Number(value.avg) &&
-              found.answers.length < value.answers.length)))
+        !found1 ||
+        (found1 !== null &&
+          (Number(found1.last5Avg) > Number(value.last5Avg) ||
+            (Number(found1.last5Avg) === Number(value.last5Avg) &&
+              found1.answers.length < value.answers.length)))
       ) {
-        minPointQuestions[value.part] = value;
+        minPointQuestions1[value.part] = value;
+        if (!found2 || found1.last5Avg < found2.last5Avg) {
+          minPointQuestions2[value.part] = found1;
+        }
+        return;
       }
+
+      if (
+        !found2 ||
+        (found2 !== null &&
+          (Number(found2.last5Avg) > Number(value.last5Avg) ||
+            (Number(found2.last5Avg) === Number(value.last5Avg) &&
+              found2.answers.length < value.answers.length)))
+      ) {
+        minPointQuestions2[value.part] = value;
+      }
+
     });
+
+    minPointQuestions1.forEach(q => minPointQuestions.value.push(q))
+    minPointQuestions.value.push(minPointQuestions2[0])
+    minPointQuestions.value.push(minPointQuestions2[2])
+    minPointQuestions.value.push(minPointQuestions2[4])
+    minPointQuestions.value.push(minPointQuestions2[5])
+
+    minPointQuestions.value.sort((item1, item2) => (item1.part - item2.part + item1.question - item2.question))
   }
 });
 
@@ -36,7 +66,7 @@ const practiceDialog = ref(false);
 const answers = ref<Answer[]>([]);
 const onPracticeClick = () => {
   practiceDialog.value = true;
-  answers.value = minPointQuestions.map((item) => ({
+  answers.value = minPointQuestions.value.map((item) => ({
     question: item.question,
     point: null,
     username: loggedInUser.username,
@@ -51,7 +81,7 @@ const save = async () => {
 };
 </script>
 <template>
-  <VCard title="Tình huống cần cải thiện">
+  <VCard title="Tình huống cần cải thiện gần đây">
     <v-table density="compact" fixed-header height="260px">
       <thead style="font-size: 14px;">
       <tr>
@@ -67,7 +97,7 @@ const save = async () => {
           <td>{{ questionObj && questionObj.part + 1 }}</td>
           <td>{{ questionObj && questionObj.question }}</td>
           <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
-          <td>{{ questionObj && questionObj.avg }}</td>
+          <td>{{ questionObj && questionObj.last5Avg }}</td>
         </template>
       </tr>
       </tbody>

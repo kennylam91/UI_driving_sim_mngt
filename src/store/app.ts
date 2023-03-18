@@ -21,7 +21,7 @@ export const useAppStore = defineStore("app", () => {
 
   const totalPointArr = reactive([0, 0, 0, 0, 0, 0]);
   const totalAnswerArr = reactive([0, 0, 0, 0, 0, 0]);
-  const answersByQuestionMap = reactive<Map<number, { question: number, answers: number[], part: number, avg: string, totalPoint: number }>>(new Map())
+  const answersByQuestionMap = reactive<Map<number, { question: number, answers: number[], part: number, avg: string, totalPoint: number, last5Avg: string }>>(new Map())
   const averagePointGroupByDay = ref()
 
   const fetchAnswers = async () => {
@@ -45,7 +45,7 @@ export const useAppStore = defineStore("app", () => {
       totalAnswerArr[i] = 0;
     }
     for (let i = 1; i <= 120; i++) {
-      answersByQuestionMap.set(i, {question: i, part: 0, avg: '---', answers: [], totalPoint: 0})
+      answersByQuestionMap.set(i, {question: i, part: 0, avg: '---', answers: [], totalPoint: 0, last5Avg: ''})
     }
     allAnswers.value?.forEach((answer) => {
       if (answer.question >= 91 && answer.question <= 120) {
@@ -80,6 +80,8 @@ export const useAppStore = defineStore("app", () => {
           questionObj.answers.push(Number(answer.point))
           questionObj.totalPoint += Number(answer.point)
           questionObj.avg = (questionObj.totalPoint / questionObj.answers.length).toFixed(1)
+          const last5Arr = questionObj.answers.slice(-5)
+          questionObj.last5Avg = ((last5Arr.reduce((p, c) => p + c, 0)) / last5Arr.length).toFixed(1)
         }
         const timezone = moment.tz.guess()
         const localeDate = moment.tz(answer.createdAt!, timezone).format('DD-MM')
