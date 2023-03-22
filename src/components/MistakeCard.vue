@@ -21,7 +21,6 @@ watch(loading, (newVal) => {
     }
     minPointQuestions.value = []
 
-
     answersByQuestionMap.value.forEach((value, key) => {
       const found1 = minPointQuestions1[value.part];
       const found2 = minPointQuestions2[value.part];
@@ -58,7 +57,7 @@ watch(loading, (newVal) => {
     minPointQuestions.value.push(minPointQuestions2[4])
     minPointQuestions.value.push(minPointQuestions2[5])
 
-    minPointQuestions.value.sort((item1, item2) => (item1.part - item2.part + item1.question - item2.question))
+    minPointQuestions.value.sort((item1, item2) => (item1?.part - item2?.part + item1?.question - item2?.question))
   }
 });
 
@@ -79,6 +78,8 @@ const save = async () => {
   practiceDialog.value = false;
   await fetchAnswers();
 };
+
+const hasSomethingToPractice = computed(() => minPointQuestions.value.some(item => item))
 </script>
 <template>
   <VCard title="Tình huống cần cải thiện gần đây">
@@ -105,7 +106,7 @@ const save = async () => {
     <v-divider></v-divider>
     <v-card-actions>
       <!--      <v-btn color="warning" variant="text"> Xem thêm</v-btn>-->
-      <v-btn color="primary" variant="text" @click="onPracticeClick">
+      <v-btn v-if="hasSomethingToPractice" color="primary" variant="text" @click="onPracticeClick">
         Luyện tập ngay
       </v-btn>
     </v-card-actions>
