@@ -11,7 +11,7 @@ const statistics = computed(() => {
   const arr: any[] = [
     {
       title: "Điểm TB",
-      stats: allPartAvgPoint,
+      stats: allPartAvgPoint.value,
       icon: "mdi-trophy",
       color: "success",
     },

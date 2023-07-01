@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {Answer} from "@/common/type";
-import {addAnswers} from "@/services/answer.service";
-import {useAppStore} from "@/store/app";
-import {ref} from "vue";
+import { Answer } from "@/common/type";
+import { addAnswers } from "@/services/answer.service";
+import { useAppStore } from "@/store/app";
+import { ref } from "vue";
 
-const {loggedInUser, fetchAnswers} = useAppStore();
+const { loggedInUser, fetchAnswers } = useAppStore();
 
 const addAnswersDialog = ref(false);
 const newAnswersStr = ref("");
@@ -40,9 +40,9 @@ const onAddAnswersSave = async () => {
 </script>
 <template>
   <VCard title="Thêm điểm số nhanh">
-    <VCardText>
-      Thêm nhanh điểm số của các câu hỏi đã luyện tập.
-    </VCardText>
+    <VCardSubtitle>
+      Nhập điểm số để thống kê và theo dõi quá trình học
+    </VCardSubtitle>
     <VCardActions>
       <VBtn color="primary" variant="text" @click="onAddAnswersClick">
         Thêm điểm
@@ -51,12 +51,12 @@ const onAddAnswersSave = async () => {
     <v-dialog v-model="addAnswersDialog" width="auto" persistent>
       <v-card title="Thêm điểm số">
         <v-card-item>
-        <span class="text-caption">
-          Thêm điểm số mới bằng cách nhập vào ô dưới đây theo cấu trúc: 10:3,
-          25:5 <br/>
-          trong đó 10 là câu hỏi, 3 là điểm số tương ứng và các câu được ngăn
-          cách bằng dấu phẩy.
-        </span>
+          <span class="text-caption">
+            Thêm điểm số mới bằng cách nhập vào ô dưới đây theo cấu trúc: 10:3,
+            25:5 <br />
+            trong đó 10 là câu hỏi, 3 là điểm số tương ứng và các câu được ngăn
+            cách bằng dấu phẩy.
+          </span>
         </v-card-item>
         <v-card-text>
           <VTextarea
@@ -74,5 +74,4 @@ const onAddAnswersSave = async () => {
       </v-card>
     </v-dialog>
   </VCard>
-
 </template>

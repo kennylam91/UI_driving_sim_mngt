@@ -101,7 +101,12 @@ const hasSomethingToPractice = computed(() =>
 </script>
 <template>
   <VCard title="Tình huống cần cải thiện gần đây">
-    <v-table density="compact" fixed-header height="260px">
+    <v-table
+      v-if="hasSomethingToPractice"
+      density="compact"
+      fixed-header
+      height="260px"
+    >
       <thead style="font-size: 14px">
         <tr>
           <th>Phần</th>
@@ -111,27 +116,28 @@ const hasSomethingToPractice = computed(() =>
         </tr>
       </thead>
       <tbody style="font-size: 14px">
-        <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
-          <template v-if="questionObj">
-            <td>{{ questionObj && questionObj.part }}</td>
-            <td>{{ questionObj && questionObj.question }}</td>
-            <td>
-              {{ questionObj && questionObj.answers.slice(-3).join(", ") }}
-            </td>
-            <td>{{ questionObj && questionObj.avg }}</td>
-          </template>
+        <tr
+          v-for="(questionObj, index) in minPointQuestions.filter(
+            (item) => item != null
+          )"
+          :key="index"
+        >
+          <td>{{ questionObj && questionObj.part }}</td>
+          <td>{{ questionObj && questionObj.question }}</td>
+          <td>
+            {{ questionObj && questionObj.answers.slice(-3).join(", ") }}
+          </td>
+          <td>{{ questionObj && questionObj.avg }}</td>
         </tr>
       </tbody>
     </v-table>
+    <VCardText v-else>
+      Chưa có dữ liệu để hiển thị. Hãy bắt đầu luyện tập ngay.
+    </VCardText>
     <v-divider></v-divider>
-    <v-card-actions>
+    <v-card-actions v-if="hasSomethingToPractice">
       <!--      <v-btn color="warning" variant="text"> Xem thêm</v-btn>-->
-      <v-btn
-        v-if="hasSomethingToPractice"
-        color="primary"
-        variant="text"
-        @click="onPracticeClick"
-      >
+      <v-btn color="primary" variant="text" @click="onPracticeClick">
         Luyện tập ngay
       </v-btn>
     </v-card-actions>
