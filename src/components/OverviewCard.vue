@@ -4,12 +4,8 @@ import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 
 const appStore = useAppStore();
-const {
-  totalAnswers,
-  totalAnswerArr,
-  byQuestionMap,
-  byPartMap,
-} = storeToRefs(appStore);
+const { totalAnswers, totalAnswerArr, byQuestionMap, byPartMap } =
+  storeToRefs(appStore);
 
 const statistics = computed(() => {
   const arr: any[] = [
