@@ -1,17 +1,31 @@
 <script setup lang="ts">
-import {useAppStore} from "@/store/app";
-import {storeToRefs} from "pinia";
-import {computed, reactive, ref, watch} from "vue";
-import {Answer} from "@/common/type";
-import {addAnswers} from "@/services/answer.service";
+import { useAppStore } from "@/store/app";
+import { storeToRefs } from "pinia";
+import { computed, reactive, ref, watch } from "vue";
+import { Answer } from "@/common/type";
+import { addAnswers } from "@/services/answer.service";
 
 const appStore = useAppStore();
-const {loggedInUser, fetchAnswers} = appStore;
-const {answersByQuestionMap, loading} = storeToRefs(appStore);
+const { loggedInUser, fetchAnswers } = appStore;
+const { loading, byQuestionMap } = storeToRefs(appStore);
 
-const minPointQuestions = ref<any[]>([])
-const minPointQuestions1: any[] = reactive([null, null, null, null, null, null]);
-const minPointQuestions2: any[] = reactive([null, null, null, null, null, null]);
+const minPointQuestions = ref<any[]>([]);
+const minPointQuestions1: any[] = reactive([
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+]);
+const minPointQuestions2: any[] = reactive([
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+]);
 
 watch(loading, (newVal) => {
   if (!newVal) {
@@ -19,22 +33,22 @@ watch(loading, (newVal) => {
       minPointQuestions1[i] = null;
       minPointQuestions2[i] = null;
     }
-    minPointQuestions.value = []
+    minPointQuestions.value = [];
 
-    answersByQuestionMap.value.forEach((value, key) => {
-      const found1 = minPointQuestions1[value.part];
-      const found2 = minPointQuestions2[value.part];
+    byQuestionMap.value.forEach((value, key) => {
+      const found1 = minPointQuestions1[value.part - 1];
+      const found2 = minPointQuestions2[value.part - 1];
 
       if (
         !found1 ||
         (found1 !== null &&
-          (Number(found1.last5Avg) > Number(value.last5Avg) ||
-            (Number(found1.last5Avg) === Number(value.last5Avg) &&
+          (Number(found1.avg) > Number(value.avg) ||
+            (Number(found1.avg) === Number(value.avg) &&
               found1.answers.length < value.answers.length)))
       ) {
-        minPointQuestions1[value.part] = value;
-        if (!found2 || found1.last5Avg < found2.last5Avg) {
-          minPointQuestions2[value.part] = found1;
+        minPointQuestions1[value.part - 1] = value;
+        if (!found2 || found1.avg < found2.avg) {
+          minPointQuestions2[value.part - 1] = found1;
         }
         return;
       }
@@ -42,22 +56,24 @@ watch(loading, (newVal) => {
       if (
         !found2 ||
         (found2 !== null &&
-          (Number(found2.last5Avg) > Number(value.last5Avg) ||
-            (Number(found2.last5Avg) === Number(value.last5Avg) &&
+          (Number(found2.avg) > Number(value.avg) ||
+            (Number(found2.avg) === Number(value.avg) &&
               found2.answers.length < value.answers.length)))
       ) {
-        minPointQuestions2[value.part] = value;
+        minPointQuestions2[value.part - 1] = value;
       }
-
     });
 
-    minPointQuestions1.forEach(q => minPointQuestions.value.push(q))
-    minPointQuestions.value.push(minPointQuestions2[0])
-    minPointQuestions.value.push(minPointQuestions2[2])
-    minPointQuestions.value.push(minPointQuestions2[4])
-    minPointQuestions.value.push(minPointQuestions2[5])
+    minPointQuestions1.forEach((q) => minPointQuestions.value.push(q));
+    minPointQuestions.value.push(minPointQuestions2[0]);
+    minPointQuestions.value.push(minPointQuestions2[2]);
+    minPointQuestions.value.push(minPointQuestions2[4]);
+    minPointQuestions.value.push(minPointQuestions2[5]);
 
-    minPointQuestions.value.sort((item1, item2) => (item1?.part - item2?.part + item1?.question - item2?.question))
+    minPointQuestions.value.sort(
+      (item1, item2) =>
+        item1?.part - item2?.part + item1?.question - item2?.question
+    );
   }
 });
 
@@ -79,34 +95,43 @@ const save = async () => {
   await fetchAnswers();
 };
 
-const hasSomethingToPractice = computed(() => minPointQuestions.value.some(item => item))
+const hasSomethingToPractice = computed(() =>
+  minPointQuestions.value.some((item) => item)
+);
 </script>
 <template>
   <VCard title="Tình huống cần cải thiện gần đây">
     <v-table density="compact" fixed-header height="260px">
-      <thead style="font-size: 14px;">
-      <tr>
-        <th>Phần</th>
-        <th>TH</th>
-        <th>Điểm</th>
-        <th>TB</th>
-      </tr>
+      <thead style="font-size: 14px">
+        <tr>
+          <th>Phần</th>
+          <th>TH</th>
+          <th>Điểm</th>
+          <th>TB</th>
+        </tr>
       </thead>
-      <tbody style="font-size: 14px;">
-      <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
-        <template v-if="questionObj">
-          <td>{{ questionObj && questionObj.part + 1 }}</td>
-          <td>{{ questionObj && questionObj.question }}</td>
-          <td>{{ questionObj && questionObj.answers.join(", ") }}</td>
-          <td>{{ questionObj && questionObj.last5Avg }}</td>
-        </template>
-      </tr>
+      <tbody style="font-size: 14px">
+        <tr v-for="(questionObj, index) in minPointQuestions" :key="index">
+          <template v-if="questionObj">
+            <td>{{ questionObj && questionObj.part }}</td>
+            <td>{{ questionObj && questionObj.question }}</td>
+            <td>
+              {{ questionObj && questionObj.answers.slice(-3).join(", ") }}
+            </td>
+            <td>{{ questionObj && questionObj.avg }}</td>
+          </template>
+        </tr>
       </tbody>
     </v-table>
     <v-divider></v-divider>
     <v-card-actions>
       <!--      <v-btn color="warning" variant="text"> Xem thêm</v-btn>-->
-      <v-btn v-if="hasSomethingToPractice" color="primary" variant="text" @click="onPracticeClick">
+      <v-btn
+        v-if="hasSomethingToPractice"
+        color="primary"
+        variant="text"
+        @click="onPracticeClick"
+      >
         Luyện tập ngay
       </v-btn>
     </v-card-actions>
@@ -145,7 +170,7 @@ const hasSomethingToPractice = computed(() => minPointQuestions.value.some(item 
                     variant="plain"
                     class="ml-2"
                     @click="() => (practiceDialog = false)"
-                  >Đóng
+                    >Đóng
                   </v-btn>
                 </div>
               </VCol>

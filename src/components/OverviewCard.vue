@@ -1,31 +1,27 @@
 <script lang="ts" setup>
-import {useAppStore} from "@/store/app";
-import {storeToRefs} from "pinia";
-import {computed, ref} from "vue";
+import { useAppStore } from "@/store/app";
+import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
 
 const appStore = useAppStore();
 const {
   totalAnswers,
-  totalPoints,
   totalAnswerArr,
-  totalPointArr,
-  answersByQuestionMap,
+  byQuestionMap,
+  byPartMap,
 } = storeToRefs(appStore);
 
 const statistics = computed(() => {
   const arr: any[] = [
     {
       title: "Điểm TB",
-      stats:
-        totalAnswers.value > 0
-          ? Number(totalPoints.value / totalAnswers.value).toFixed(2)
-          : "---",
+      stats: allPartAvgPoint,
       icon: "mdi-trophy",
       color: "success",
     },
     {
       title: "Số câu đã làm",
-      stats: totalAnswers,
+      stats: totalAnswers.value,
       icon: "mdi-history",
       color: "primary",
     },
@@ -33,7 +29,7 @@ const statistics = computed(() => {
   for (let i = 1; i <= 6; i++) {
     arr.push({
       title: "Phần " + i,
-      stats: getAveragePoint(i - 1),
+      stats: getAveragePoint(i),
       answers: totalAnswerArr.value[i - 1],
       icon: `mdi-numeric-${i}-box`,
       color: "warning",
@@ -44,12 +40,20 @@ const statistics = computed(() => {
   return arr;
 });
 
-const getAveragePoint = (partIdx: number) => {
-  return isNaN(totalPointArr.value[partIdx] / totalAnswerArr.value[partIdx])
-    ? "---"
-    : Number(
-      totalPointArr.value[partIdx] / totalAnswerArr.value[partIdx]
-    ).toFixed(2);
+const allPartAvgPoint = computed(() => {
+  let sum = 0;
+  let count = 0;
+  byPartMap.value.forEach((value, key) => {
+    const weight = [1, 3, 5, 6].includes(key) ? 2 : 1;
+    sum += value.avg * weight;
+    count += weight;
+  });
+
+  return count > 0 ? Number((sum / count).toFixed(1)) : "---";
+});
+
+const getAveragePoint = (part: number) => {
+  return (byPartMap.value.get(part)?.avg || 0).toFixed(1);
 };
 
 const historyDialog = ref(false);
@@ -70,7 +74,7 @@ const questionList = computed(() => {
     for (let i = partRange[0]; i <= partRange[1]; i++) {
       questionList.push({
         num: i,
-        info: answersByQuestionMap.value.get(i),
+        info: byQuestionMap.value.get(i),
       });
     }
   }
@@ -86,7 +90,13 @@ const viewHistory = (item: any) => {
   <VCard title="Tổng quan">
     <VCardText class="mt-3">
       <VRow>
-        <VCol v-for="item in statistics" :key="item.title" cols="6" sm="6" class="py-2">
+        <VCol
+          v-for="item in statistics"
+          :key="item.title"
+          cols="6"
+          sm="6"
+          class="py-2"
+        >
           <div class="d-flex align-center">
             <div class="me-2">
               <VAvatar
@@ -95,7 +105,7 @@ const viewHistory = (item: any) => {
                 size="42"
                 class="elevation-1"
               >
-                <VIcon size="24" :icon="item.icon"/>
+                <VIcon size="24" :icon="item.icon" />
               </VAvatar>
             </div>
 
@@ -113,9 +123,9 @@ const viewHistory = (item: any) => {
                 <span
                   v-if="item.answers"
                   class="link text-caption text-info"
-                  @click=" viewHistory(item)"
+                  @click="viewHistory(item)"
                 >
-                {{ `(${item.answers} lần)` }}</span
+                  {{ `(${item.answers} lần)` }}</span
                 >
               </div>
             </div>
@@ -134,25 +144,26 @@ const viewHistory = (item: any) => {
       <v-card-text class="pa-0">
         <v-table density="compact" fixed-header height="60vh">
           <thead>
-          <tr>
-            <th>STT</th>
-            <th>Điểm</th>
-            <th>TB</th>
-          </tr>
+            <tr>
+              <th>STT</th>
+              <th>Điểm</th>
+              <th>TB</th>
+              <!-- todo: add an icon to explain this -->
+            </tr>
           </thead>
           <tbody>
-          <tr v-for="question in questionList" :key="question.num">
-            <td>{{ question.num }}</td>
-            <td>
-              {{
-                (question.info.answers && question.info.answers.join(", ")) ||
-                "---"
-              }}
-            </td>
-            <td>
-              {{ question.info.avg }}
-            </td>
-          </tr>
+            <tr v-for="question in questionList" :key="question.num">
+              <td>{{ question.num }}</td>
+              <td>
+                {{
+                  (question.info.answers && question.info.answers.join(", ")) ||
+                  "---"
+                }}
+              </td>
+              <td>
+                {{ question.info.avg }}
+              </td>
+            </tr>
           </tbody>
         </v-table>
       </v-card-text>
