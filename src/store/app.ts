@@ -21,8 +21,8 @@ export const useAppStore = defineStore("app", () => {
   const totalAnswerArr = reactive([0, 0, 0, 0, 0, 0]);
   const averagePointGroupByDay = ref()
 
-  const byQuestionMap = reactive<Map<number, ByQuestionMapValue>>(new Map())
-  const byPartMap = reactive<Map<number, { point: number, count: number, avg: number }>>(new Map())
+  const byQuestionMap = ref<Map<number, ByQuestionMapValue>>(new Map())
+  const byPartMap = ref<Map<number, { point: number, count: number, avg: number }>>(new Map())
 
   const fetchAnswers = async () => {
     try {
@@ -41,6 +41,8 @@ export const useAppStore = defineStore("app", () => {
   }
 
   const analyzeAnswers2 = () => {
+    byQuestionMap.value = new Map()
+    byPartMap.value = new Map()
     allAnswers.value?.forEach(answer => {
       const { question, point } = answer;
       if (question <= 0 || question > 120 || (!point && point !== 0)) {
@@ -48,11 +50,11 @@ export const useAppStore = defineStore("app", () => {
         return
       }
 
-      if (byQuestionMap.has(question)) {
-        const found = byQuestionMap.get(question);
+      if (byQuestionMap.value.has(question)) {
+        const found = byQuestionMap.value.get(question);
         found?.answers.push(Number(point))
       } else {
-        byQuestionMap.set(question, {
+        byQuestionMap.value.set(question, {
           question: question,
           part: getPart(question),
           answers: [Number(point!)]
@@ -60,20 +62,20 @@ export const useAppStore = defineStore("app", () => {
       }
     })
 
-    byQuestionMap.forEach((value) => {
+    byQuestionMap.value.forEach((value) => {
       const last3Answers = value.answers.slice(-3);
       value.avg = Number((last3Answers.reduce((prev, cur) => prev + cur, 0) / last3Answers.length).toFixed(1));
     })
 
-    byPartMap.set(1, { point: 0, count: 0, avg: 0 })
-    byPartMap.set(2, { point: 0, count: 0, avg: 0 })
-    byPartMap.set(3, { point: 0, count: 0, avg: 0 })
-    byPartMap.set(4, { point: 0, count: 0, avg: 0 })
-    byPartMap.set(5, { point: 0, count: 0, avg: 0 })
-    byPartMap.set(6, { point: 0, count: 0, avg: 0 })
-    byQuestionMap.forEach(byQuestion => {
-      if (byPartMap.has(byQuestion.part)) {
-        const byPart = byPartMap.get(byQuestion.part)
+    byPartMap.value.set(1, { point: 0, count: 0, avg: 0 })
+    byPartMap.value.set(2, { point: 0, count: 0, avg: 0 })
+    byPartMap.value.set(3, { point: 0, count: 0, avg: 0 })
+    byPartMap.value.set(4, { point: 0, count: 0, avg: 0 })
+    byPartMap.value.set(5, { point: 0, count: 0, avg: 0 })
+    byPartMap.value.set(6, { point: 0, count: 0, avg: 0 })
+    byQuestionMap.value.forEach(byQuestion => {
+      if (byPartMap.value.has(byQuestion.part)) {
+        const byPart = byPartMap.value.get(byQuestion.part)
         byPart!.count++
         byPart!.point += byQuestion.avg!
         byPart!.avg = Number((byPart!.point / byPart!.count).toFixed(1))
