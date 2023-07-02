@@ -1,5 +1,5 @@
 // Composables
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
@@ -20,15 +20,15 @@ const routes = [
         component: () => import(/* webpackChunkName: "create-random-exam" */ '@/views/CreateRandomExam.vue'),
       },
       {
-        path: '/dang-nhap',
-        name: 'Login',
-        component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+        path: '/bat-dau',
+        name: 'GettingStarted',
+        component: () => import(/* webpackChunkName: "getting-started" */ '@/views/getting-started.vue'),
       },
-      {
-        path: '/dang-ki',
-        name: 'Register',
-        component: () => import(/* webpackChunkName: "register" */ '@/views/Register.vue'),
-      },
+      // {
+      //   path: '/dang-ki',
+      //   name: 'Register',
+      //   component: () => import(/* webpackChunkName: "register" */ '@/views/Register.vue'),
+      // },
 
     ],
 
@@ -43,12 +43,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem("user") || "{}")
 
-  if (['Login', 'Register'].includes(String(to.name))) {
+  if (['GettingStarted'].includes(String(to.name))) {
     next()
   } else if (user?.username) {
     next()
   } else {
-    next({name: 'Login'})
+    next({ name: 'GettingStarted' })
   }
 })
 

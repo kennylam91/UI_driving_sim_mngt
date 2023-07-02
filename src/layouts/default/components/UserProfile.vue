@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {useAppStore} from "@/store/app";
+import { useAppStore } from "@/store/app";
 
-const {loggedInUser} = useAppStore();
+const { loggedInUser } = useAppStore();
 </script>
 
 <template>
@@ -51,24 +51,24 @@ const {loggedInUser} = useAppStore();
             </v-list-item-title>
           </v-list-item>
 
-          <v-divider class="my-2"/>
+          <v-divider class="my-2" />
 
           <!-- 👉 Profile -->
           <v-list-item link>
             <template #prepend>
-              <v-icon class="me-2" icon="mdi-account-outline" size="22"/>
+              <v-icon class="me-2" icon="mdi-account-outline" size="22" />
             </template>
 
             <v-list-item-title>Tài khoản</v-list-item-title>
           </v-list-item>
 
           <!-- Divider -->
-          <v-divider class="my-2"/>
+          <v-divider class="my-2" />
 
           <!-- 👉 Logout -->
-          <v-list-item to="/dang-nhap">
+          <v-list-item to="/bat-dau">
             <template #prepend>
-              <v-icon class="me-2" icon="mdi-logout-variant" size="22"/>
+              <v-icon class="me-2" icon="mdi-logout-variant" size="22" />
             </template>
 
             <v-list-item-title>Đăng xuất</v-list-item-title>
