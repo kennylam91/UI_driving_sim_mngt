@@ -137,7 +137,13 @@ const hasSomethingToPractice = computed(() =>
     <v-divider></v-divider>
     <v-card-actions v-if="hasSomethingToPractice">
       <!--      <v-btn color="warning" variant="text"> Xem thêm</v-btn>-->
-      <v-btn color="primary" variant="text" @click="onPracticeClick">
+      <v-btn
+        block
+        color="warning"
+        variant="elevated"
+        @click="onPracticeClick"
+        prepend-icon="mdi-weight-lifter"
+      >
         Luyện tập ngay
       </v-btn>
     </v-card-actions>

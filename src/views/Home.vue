@@ -22,15 +22,21 @@ const cols = computed(() => {
       <VCol :cols="cols[0]">
         <OverviewCard />
         <AddAnswersCard class="mt-6" />
-        <VCard title="Tạo một bộ đề thi ngẫu nhiên" class="mt-6">
-          <VCardSubtitle>
+        <VCard
+          title="Tạo một bộ đề thi ngẫu nhiên"
+          class="mt-6"
+          color="#3F51B5"
+          theme="dark"
+        >
+          <VCardText>
             Bộ đề thi gồm 10 câu theo cấu trúc đề thi thật từ bộ GTVT.
-          </VCardSubtitle>
+          </VCardText>
           <VCardActions>
             <VBtn
-              color="primary"
-              variant="text"
+              prepend-icon="mdi-playlist-plus"
+              variant="tonal"
               :to="{ name: 'CreateRandomExam' }"
+              block
             >
               Tạo ngay
             </VBtn>

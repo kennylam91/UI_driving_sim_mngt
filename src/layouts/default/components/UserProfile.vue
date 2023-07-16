@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
+import { useRouter } from "vue-router";
 
 const { loggedInUser } = useAppStore();
+const router = useRouter();
+
+const onLogoutClick = () => {
+  localStorage.removeItem("user");
+  router.push({ name: "GettingStarted" });
+};
 </script>
 
 <template>
@@ -14,7 +21,7 @@ const { loggedInUser } = useAppStore();
     color="success"
     bordered
   >
-    <v-avatar style="cursor: pointer" color="primary" variant="tonal">
+    <v-avatar style="cursor: pointer" variant="tonal">
       <!-- <v-img :alt="loggedInUser.username" :src="avatar" /> -->
       <v-icon icon="mdi-account-circle" size="40"></v-icon>
 
@@ -54,19 +61,19 @@ const { loggedInUser } = useAppStore();
           <v-divider class="my-2" />
 
           <!-- 👉 Profile -->
-          <v-list-item link>
+          <!-- <v-list-item link>
             <template #prepend>
               <v-icon class="me-2" icon="mdi-account-outline" size="22" />
             </template>
 
             <v-list-item-title>Tài khoản</v-list-item-title>
-          </v-list-item>
+          </v-list-item> -->
 
           <!-- Divider -->
-          <v-divider class="my-2" />
+          <!-- <v-divider class="my-2" /> -->
 
           <!-- 👉 Logout -->
-          <v-list-item to="/bat-dau">
+          <v-list-item @click="onLogoutClick">
             <template #prepend>
               <v-icon class="me-2" icon="mdi-logout-variant" size="22" />
             </template>

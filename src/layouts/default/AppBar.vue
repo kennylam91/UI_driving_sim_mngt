@@ -11,7 +11,8 @@ const backToHome = () => {
 <template>
   <v-app-bar density="compact" color="primary">
     <v-app-bar-title> Luyện Mô Phỏng Online </v-app-bar-title>
-    <!-- <v-spacer></v-spacer>
-    <UserProfile class="mr-4"/> -->
+    <template v-slot:append>
+      <UserProfile />
+    </template>
   </v-app-bar>
 </template>

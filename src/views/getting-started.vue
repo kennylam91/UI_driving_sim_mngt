@@ -1,11 +1,13 @@
 <script lang="ts" setup>
+import { login } from "@/services/user.service";
 import { useAppStore } from "@/store/app";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 const { setUser } = useAppStore();
 const { push } = useRouter();
 const formRef = ref<any>(null);
+const snackbar = reactive({ show: false, text: "", timeout: 3000, color: "" });
 
 const form = ref({
   username: "",
@@ -15,9 +17,18 @@ const onSubmit = async () => {
   if (formRef.value) {
     const { valid } = await formRef.value.validate();
     if (valid) {
-      setUser(form.value);
-      localStorage.setItem("user", JSON.stringify(form.value));
-      push({ name: "Home" });
+      try {
+        const response = await login(form.value);
+        setUser(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        push({ name: "Home" });
+      } catch (error: any) {
+        if (error.response?.data) {
+          snackbar.text = error.response.data;
+          snackbar.color = "error";
+          snackbar.show = true;
+        }
+      }
     }
   }
 };
@@ -41,10 +52,11 @@ const onSubmit = async () => {
             <v-text-field
               v-model="form.username"
               label="Tài khoản"
+              prepend-inner-icon="mdi-account"
               :rules="[
                 (v) => !!v || 'Tài khoản không được để trống.',
                 (value) =>
-                  value.length >= 8 || 'Tài khoản cần tối thiểu 8 kí tự',
+                  value.length >= 6 || 'Tài khoản cần tối thiểu 6 kí tự',
               ]"
             />
           </VCol>
@@ -56,5 +68,12 @@ const onSubmit = async () => {
         </v-form>
       </VCardText>
     </VCard>
+    <v-snackbar
+      v-model="snackbar.show"
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+    >
+      {{ snackbar.text }}</v-snackbar
+    >
   </div>
 </template>

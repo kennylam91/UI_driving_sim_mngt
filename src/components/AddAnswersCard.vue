@@ -39,12 +39,18 @@ const onAddAnswersSave = async () => {
 };
 </script>
 <template>
-  <VCard title="Thêm điểm số nhanh">
-    <VCardSubtitle>
-      Nhập điểm số để thống kê và theo dõi quá trình học
-    </VCardSubtitle>
+  <VCard title="Thêm điểm số nhanh" color="primary">
+    <VCardText>
+      Sử dụng phần mềm <b>OnTapMoPhong</b> trên windows để luyện tập. Sau đó
+      nhập điểm số vào hệ thống thống kê và theo dõi.
+    </VCardText>
     <VCardActions>
-      <VBtn color="primary" variant="text" @click="onAddAnswersClick">
+      <VBtn
+        prepend-icon="mdi-plus-thick"
+        variant="tonal"
+        @click="onAddAnswersClick"
+        block
+      >
         Thêm điểm
       </VBtn>
     </VCardActions>
