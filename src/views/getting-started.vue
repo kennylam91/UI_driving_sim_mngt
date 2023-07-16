@@ -5,15 +5,21 @@ import { useRouter } from "vue-router";
 
 const { setUser } = useAppStore();
 const { push } = useRouter();
+const formRef = ref<any>(null);
 
 const form = ref({
   username: "",
 });
 
-const onSubmit = () => {
-  setUser(form.value);
-  localStorage.setItem("user", JSON.stringify(form.value));
-  push({ name: "Home" });
+const onSubmit = async () => {
+  if (formRef.value) {
+    const { valid } = await formRef.value.validate();
+    if (valid) {
+      setUser(form.value);
+      localStorage.setItem("user", JSON.stringify(form.value));
+      push({ name: "Home" });
+    }
+  }
 };
 </script>
 <template>
@@ -29,13 +35,17 @@ const onSubmit = () => {
         </span>
       </VCardText>
       <VCardText>
-        <v-form validate-on="blur" @submit.prevent="onSubmit">
+        <v-form ref="formRef" validate-on="blur" @submit.prevent="onSubmit">
           <VCol>
             <h6 class="text-h6">Nhập tài khoản để bắt đầu ngay</h6>
             <v-text-field
               v-model="form.username"
               label="Tài khoản"
-              :rules="[(v) => !!v || 'Tài khoản không được để trống.']"
+              :rules="[
+                (v) => !!v || 'Tài khoản không được để trống.',
+                (value) =>
+                  value.length >= 8 || 'Tài khoản cần tối thiểu 8 kí tự',
+              ]"
             />
           </VCol>
           <VCol>
