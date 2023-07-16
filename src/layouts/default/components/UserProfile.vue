@@ -2,18 +2,19 @@
 import { useAppStore } from "@/store/app";
 import { useRouter } from "vue-router";
 
-const { loggedInUser } = useAppStore();
+const appStore = useAppStore();
 const router = useRouter();
 
 const onLogoutClick = () => {
   localStorage.removeItem("user");
+  appStore.setUser(null);
   router.push({ name: "GettingStarted" });
 };
 </script>
 
 <template>
   <v-badge
-    v-if="loggedInUser"
+    v-if="appStore.loggedInUser"
     dot
     location="bottom right"
     offset-x="3"
@@ -54,7 +55,7 @@ const onLogoutClick = () => {
             </template>
 
             <v-list-item-title class="font-weight-semibold">
-              {{ loggedInUser.username }}
+              {{ appStore.loggedInUser.username }}
             </v-list-item-title>
           </v-list-item>
 

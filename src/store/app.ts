@@ -29,7 +29,7 @@ export const useAppStore = defineStore("app", () => {
       loading.value = true
       const res = await getAnswers(loggedInUser.value.username)
       allAnswers.value = res.data
-      if (allAnswers.value?.length) {
+      if (allAnswers.value) {
         analyzeAnswers()
         analyzeAnswers2()
       }

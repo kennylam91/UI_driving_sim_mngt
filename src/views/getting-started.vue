@@ -34,7 +34,7 @@ const onSubmit = async () => {
 };
 </script>
 <template>
-  <div class="auth-wrapper pa-4">
+  <div class="auth-wrapper pa-4 mx-auto" style="max-width: 500px">
     <VCard class="pa-4 pt-7">
       <VCardText class="text-center">
         <h5 class="text-h5 font-weight-semibold mb-2">
